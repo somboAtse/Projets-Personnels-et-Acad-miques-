@@ -1,0 +1,145 @@
+remplissage des tables : 
+--OPERATIONS 
+db.operations.insertMany([
+  {
+    "_id": 1,
+    "nom0p": "Bonne année 2026",
+    "dateDebut0p": ISODate("2026-01-01T00:00:00Z"),
+    "dateFin0p": ISODate("2026-01-31T23:59:59Z"),
+    "promotions": [
+      {
+        "_idProd": 1,
+        "tarifs": [
+          { "taille": "41", "couleur": "Rouge", "qteStock": 6, "pxPromo": 45.99 }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": 3,
+    "nom0p": "Soldes d été",
+    "dateDebut0p": ISODate("2026-06-20T00:00:00Z"),
+    "dateFin0p": ISODate("2026-07-31T23:59:59Z"),
+    "promotions": [
+      {
+        "_idProd": 2,
+        "tarifs": [
+          { "taille": "38", "couleur": "Multicolore", "qteStock": 12, "pxPromo": 55.00 }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": 5,
+    "nom0p": "Magie de Noël",
+    "dateDebut0p": ISODate("2025-12-01T00:00:00Z"),
+    "dateFin0p": ISODate("2025-12-25T23:59:59Z"),
+    "promotions": [
+      {
+        "_idProd": 5,
+        "tarifs": [
+          { "taille": "Taille Unique", "couleur": "Noir", "qteStock": 20, "pxPromo": 25.00 }
+        ]
+      }
+    ]
+  }
+]);
+
+
+--PRODUITS 
+db.produits.insertMany([
+  {
+    "_id": 1,
+    "nomProd": "Sandales Girafon",
+    "descProd": "Sandales à talon 8 cm, style élégant",
+    "marque": "Girafon Bleu",
+    "categorie": "Sandales et Talons",
+    "tarifsPublics": [
+      { "taille": "41", "couleur": "Rouge", "pxInit": 139.00 }
+    ],
+    "commentaires": [
+      { "_idCli": 1, "texte": "Très jolies mais trop hautes pour moi.", "note": 3 }
+    ]
+  },
+  {
+    "_id": 2,
+    "nomProd": "Baskets Wax",
+    "descProd": "Baskets en tissu coloré",
+    "marque": "Panafrica",
+    "categorie": "Sneakers",
+    "tarifsPublics": [
+      { "taille": "38", "couleur": "Multicolore", "pxInit": 110.00 }
+    ],
+    "commentaires": [
+      { "_idCli": 3, "texte": "Superbe qualité et engagement éthique au top.", "note": 5 }
+    ]
+  },
+  {
+    "_id": 3,
+    "nomProd": "Bottines Cuir",
+    "descProd": "Bottines élégantes pour l hiver",
+    "marque": "Mellow Yellow",
+    "categorie": "Bottines et bottes",
+    "tarifsPublics": [
+      { "taille": "37", "couleur": "Marron", "pxInit": 180.00 }
+    ],
+    "commentaires": [
+      { "_idCli": 2, "texte": "Un peu serrées au niveau de la cheville.", "note": 2.5 }
+    ]
+  },
+  {
+    "_id": 5,
+    "nomProd": "Vega",
+    "descProd": "Chaussures de running iconiques",
+    "marque": "Mellow Yellow",
+    "categorie": "Sneakers",
+    "tarifsPublics": [
+      { "taille": "Taille Unique", "couleur": "Noir", "pxInit": 50.00 }
+    ],
+    "commentaires": [
+      { "_idCli": 4, "texte": "Parfait pour accompagner ma robe.", "note": 4.5 }
+    ]
+  }
+]);
+
+--CLIENTS
+db.clients.insertMany([
+  { "_id": 1, "nomCli": "Kent", "prenomCli": "Alice", "emailCli": "alice@email.fr" },
+  { "_id": 2, "nomCli": "Martin", "prenomCli": "Jean", "emailCli": "jean.martin@email.fr" },
+  { "_id": 3, "nomCli": "Dupont", "prenomCli": "Marie", "emailCli": "m.dupont@email.fr" },
+  { "_id": 4, "nomCli": "Durant", "prenomCli": "Paul", "emailCli": "p.durand@email.fr" },
+  { "_id": 5, "nomCli": "Lefebvre", "prenomCli": "Lucie", "emailCli": "l.lefebvre@email.fr" }
+]);
+
+
+
+
+QUESTION 4.A 
+
+db.Operations.aggregate([
+  { $match : {"nomOp" : "Bonne année 2026", "promotions.tarifs.qteStock":{$gt: 0} }},
+  {$lookup: {
+    from: "Produits",    // La collection cible
+    localField: "promotions._idProd",       // Champ dans la collection actuelle (ex: _idProd)
+    foreignField: "_id",   // Champ dans la collection cible (ex: _id)
+    as: "Produits"    // Nom du nouveau champ qui contiendra les résultats 
+      }},
+  {$match : {"Produits.categorie": {$ne: "Sacs"}}},
+  {$project : { nomProduit : "$Produits.nomProd", taille :"$promotions.tarifs.taille", Couleur : "$promotions.tarifs.couleur", PrixProm:"$promotions.tarifs.pxPromo"}}
+  
+])
+
+
+
+
+QUESTION 4.B
+db.Clients.aggregate([
+  {$lookup: {
+    from: "Produits",
+    localField: "_id",
+    foreignField: "commentaires._idCli",
+    as: "prodCom"}},
+  {$group: {
+      _id: { nom: "$nomCli", prenom: "$prenomCli" },
+      moyenneDesNotes: { $avg: "$prodCom.commentaires.note" }}}
+]) 

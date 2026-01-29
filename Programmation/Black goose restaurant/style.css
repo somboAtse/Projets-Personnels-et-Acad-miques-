@@ -1,0 +1,132 @@
+body { 
+    background-color: #faf2e4; 
+    border: 3px solid #d1633c;
+    padding: 1vh 2vw 1vh 2vh;
+    font-family: sans-serif; 
+}
+
+html{
+    background-color: #000000;
+    margin: 1vh 10vw 1vh 10vw;
+}
+
+h1{
+    margin-top : 30px;
+    border-bottom: 1px solid #57b1dc;
+    font-size: 2em;
+    font-family: serif;
+    font-weight: normal;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+h2{
+    color: #d1633c;
+    font-size: 1em;
+}
+
+strong{
+    color: #d1633c; 
+}
+
+hr{
+    border: 1px solid #57b1dc ;
+    
+}
+
+footer{
+    color: grey ;
+    font-size: 0.7em ;
+    margin-bottom: 10px ;
+    font-weight: thin;
+}
+
+.adresse{
+    font-weight: bold;
+}
+
+.poste{
+    text-transform: capitalize;
+    font-variant-caps: small-caps;
+    font-weight: lighter;
+}
+
+#logogoose{
+    display: block;
+    margin: auto;
+    block-size: 150px;
+}
+
+#reseaux { 
+    display: flex;
+    margin-top : 1em;
+    gap: 2px ;
+}
+
+.reseau {
+    display: block;
+    block-size: 50px;
+    
+} 
+
+.menu{
+    color: #d1633c;
+    font-size: 1em;
+    text-align: center;
+    
+}
+
+.plats{ 
+    font-family: cursive;
+    font-weight: 3em; 
+    
+}
+
+.descplat{ 
+    font-family: serif;
+    font-weight: lighter; 
+    font-style: italic ;
+}
+
+.prix{
+    color: rgba(0, 133, 0, 0.856);
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.zonebox{
+    border: 1px solid #57b1dc;
+    padding: 1em;
+}
+
+/* On reset les margins et padding des puces*/
+.zonebox ul {
+    padding: 0;
+    margin: 0;
+}
+
+.menuprix{
+    display: flex;
+    border: 1px solid red;
+    margin-bottom: 5px;
+
+    justify-content: space-between;    /* Pousse le texte à gauche et l'image à droite */
+    /* align-items: center;       Centre verticalement l'image par rapport au texte */
+    width: 100%;               /* Prend toute la largeur de la zonebox */
+}
+
+
+.desc{
+    /* display: block;
+    float: left; */
+
+   /*flex: 1;                    /* Prend tout l'espace disponible sauf celui de l'image */
+    padding-right: 10px;       /* Un peu d'espace avant l'image */
+}
+
+.imgplat{
+    display: block;
+    block-size: 50px;
+
+    flex-shrink: 0;            /* Empêche l'image de s'écraser si le texte est long */
+}
